@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Send Data to Server</title>
+</head>
+<body>
+<!-- 输入框和按钮 -->
+<label for="data-input">Data:</label>
+<input id="data-input" type="text">
+<button id="send-btn">Send Data to Server</button>
+
+<script>
+    const sendBtn = document.getElementById('send-btn');
+    sendBtn.addEventListener('click', () => {
+        // 获取用户输入的数据
+        const dataInput = document.getElementById('data-input');
+        const data = dataInput.value;
+
+        // 创建 XMLHttpRequest 对象
+        const xhr = new XMLHttpRequest();
+
+        // 设置请求方式和 URL
+        xhr.open('POST', 'http://172.0.0.1:3000');
+
+        // 设置请求头为 JSON 格式
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        // 监听响应事件
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // 数据插入成功，弹出提示框
+                alert('Data inserted into MySQL database');
+            } else {
+                // 数据插入失败，弹出提示框
+                alert('Error inserting data into MySQL database');
+            }
+        };
+
+        // 监听错误事件
+        xhr.onerror = function() {
+            // 连接服务器失败，弹出提示框
+            alert('Error connecting to server');
+        };
+
+        // 发送数据到服务器
+        xhr.send(JSON.stringify({ data }));
+    });
+</script>
+</body>
+</html>
+
